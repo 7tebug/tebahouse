@@ -23,6 +23,8 @@
 - **Admin dashboard polish** — drag&drop dropzones for cover + audio, cover thumbnail preview before upload, file size shown, animated success/error states, sticky upload form on desktop, library row with embedded audio preview, animated row transitions, library skeleton.
 - **CSS extras** — `beat-bar-pulse` keyframe for animated waveform during playback, `dropzone` styles with drag/has-file states.
 - **Mobile responsive pass (Jan 2026)** — Hero/About/Services/BeatsShop/Contact/Footer all centered on mobile with responsive headings (clamp + smaller min sizes, no overflow at 320px). Hero `<br>` hidden below md so text wraps naturally. Buttons full-width on small screens. Footer columns center with inline-block lists.
+- **Forced mobile breaks (Jan 2026)** — Hero mobile: "WELCOME / TO THE / TEBAHOUSE." (3 lines). About mobile: "I'LL TURN / YOUR IDEAS / INTO / BREATHTAKING / TRACKS." (5 lines). Implemented via dual spans (`md:hidden` mobile / `hidden md:inline` desktop) for deterministic line breaks on each viewport.
+- **Admin edit beat** — Pencil icon next to each library row opens a modal with prefilled fields (title, genre, BPM, price) + optional cover and audio replacement (drag&drop or click). Old storage files removed automatically when replaced. Animated modal with step-by-step status ("Uploading new cover…" → "Uploading new audio…" → "Saving…"). Cancel & Save buttons stacked on mobile, side-by-side on desktop.
 - **Admin upload hardening** — session validity check before upload, step-by-step status ("Uploading cover…", "Uploading audio…", "Saving…"), automatic storage rollback if any step fails, try/catch around post-upload `fetchBeats` so a refresh failure can never crash the page.
 
 ## Supabase setup (already done by user)

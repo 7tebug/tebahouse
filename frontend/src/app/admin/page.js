@@ -13,6 +13,8 @@ import {
   X,
   CheckCircle2,
   AlertTriangle,
+  Pencil,
+  Save,
 } from 'lucide-react';
 import { getSupabaseClient, ADMIN_EMAIL, BEATS_BUCKET } from '@/lib/supabase';
 
@@ -256,6 +258,127 @@ export default function AdminPage() {
       fetchBeats();
     } catch (err) {
       alert(err?.message || 'Delete failed');
+    }
+  };
+
+  // --- Edit beat ---
+  const [editing, setEditing] = useState(null);
+  const [editForm, setEditForm] = useState(null);
+  const [editCoverPreview, setEditCoverPreview] = useState('');
+  const [editSaving, setEditSaving] = useState(false);
+  const [editErr, setEditErr] = useState('');
+  const [editStep, setEditStep] = useState('');
+  const editCoverRef = useRef(null);
+  const editAudioRef = useRef(null);
+
+  const startEdit = (b) => {
+    setEditing(b);
+    setEditForm({
+      title: b.title || '',
+      genre: b.genre || '',
+      bpm: String(b.bpm ?? ''),
+      price: String(b.price ?? ''),
+      cover: null,
+      audio: null,
+    });
+    setEditCoverPreview('');
+    setEditErr('');
+  };
+  const cancelEdit = () => {
+    setEditing(null);
+    setEditForm(null);
+    setEditCoverPreview('');
+    setEditErr('');
+  };
+
+  // Edit cover preview
+  useEffect(() => {
+    if (!editForm?.cover) {
+      setEditCoverPreview('');
+      return;
+    }
+    const url = URL.createObjectURL(editForm.cover);
+    setEditCoverPreview(url);
+    return () => URL.revokeObjectURL(url);
+  }, [editForm?.cover]);
+
+  const editField = (k) => (e) =>
+    setEditForm((f) => ({ ...f, [k]: e.target.value }));
+  const editSetFile = (k) => (file) => {
+    if (!file) return;
+    setEditForm((f) => ({ ...f, [k]: file }));
+  };
+
+  const saveEdit = async (e) => {
+    e.preventDefault();
+    if (!editing || !editForm) return;
+    setEditErr('');
+    if (!editForm.title || !editForm.genre || !editForm.bpm || !editForm.price) {
+      setEditErr('Title, genre, BPM and price are required');
+      return;
+    }
+    setEditSaving(true);
+    try {
+      const extractPath = (url) => {
+        if (!url) return null;
+        const marker = `/${BEATS_BUCKET}/`;
+        const i = url.indexOf(marker);
+        return i >= 0 ? url.substring(i + marker.length) : null;
+      };
+
+      const updates = {
+        title: editForm.title,
+        genre: editForm.genre,
+        bpm: parseInt(editForm.bpm, 10),
+        price: parseFloat(editForm.price),
+      };
+      const oldPathsToRemove = [];
+
+      // Replace cover?
+      if (editForm.cover) {
+        setEditStep('Uploading new cover…');
+        const ext = (editForm.cover.name.split('.').pop() || 'jpg').toLowerCase();
+        const newPath = `covers/${editing.id}-${Date.now()}.${ext}`;
+        const { error } = await supabase.storage
+          .from(BEATS_BUCKET)
+          .upload(newPath, editForm.cover, { contentType: editForm.cover.type, upsert: false });
+        if (error) throw error;
+        updates.cover_url = supabase.storage.from(BEATS_BUCKET).getPublicUrl(newPath).data.publicUrl;
+        const oldPath = extractPath(editing.cover_url);
+        if (oldPath) oldPathsToRemove.push(oldPath);
+      }
+
+      // Replace audio?
+      if (editForm.audio) {
+        setEditStep('Uploading new audio…');
+        const ext = (editForm.audio.name.split('.').pop() || 'mp3').toLowerCase();
+        const newPath = `audio/${editing.id}-${Date.now()}.${ext}`;
+        const { error } = await supabase.storage
+          .from(BEATS_BUCKET)
+          .upload(newPath, editForm.audio, { contentType: editForm.audio.type, upsert: false });
+        if (error) throw error;
+        updates.audio_url = supabase.storage.from(BEATS_BUCKET).getPublicUrl(newPath).data.publicUrl;
+        const oldPath = extractPath(editing.audio_url);
+        if (oldPath) oldPathsToRemove.push(oldPath);
+      }
+
+      setEditStep('Saving…');
+      const { error: updErr } = await supabase.from('beats').update(updates).eq('id', editing.id);
+      if (updErr) throw updErr;
+
+      // Remove old files (best-effort, don't fail if this errors)
+      if (oldPathsToRemove.length) {
+        await supabase.storage.from(BEATS_BUCKET).remove(oldPathsToRemove).catch(() => {});
+      }
+
+      cancelEdit();
+      try { await fetchBeats(); } catch (err) { console.error(err); }
+    } catch (err) {
+      console.error('Edit failed', err);
+      setEditErr(err?.message || 'Edit failed');
+    } finally {
+      setEditStep('');
+      setEditSaving(false);
     }
   };
 
@@ -686,6 +809,14 @@ export default function AdminPage() {
                       style={{ filter: 'invert(1) hue-rotate(180deg) saturate(0.6)' }}
                     />
                     <button
+                      onClick={() => startEdit(b)}
+                      className="h-10 w-10 flex-shrink-0 flex items-center justify-center border border-white/10 text-white/50 hover:text-[var(--neon)] hover:border-[var(--neon)]/50 transition-colors"
+                      aria-label="Edit beat"
+                      data-testid={`edit-beat-${b.id}`}
+                    >
+                      <Pencil size={14} />
+                    </button>
+                    <button
                       onClick={() => deleteBeat(b)}
                       className="h-10 w-10 flex-shrink-0 flex items-center justify-center border border-white/10 text-white/50 hover:text-red-400 hover:border-red-400/50 transition-colors"
                       aria-label="Delete beat"
@@ -710,6 +841,207 @@ export default function AdminPage() {
           </div>
         </div>
       </div>
+
+      {/* Edit modal */}
+      <AnimatePresence>
+        {editing && editForm && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-6 bg-black/75 backdrop-blur-sm"
+            onClick={() => !editSaving && cancelEdit()}
+            data-testid="edit-modal"
+          >
+            <motion.form
+              initial={{ y: 40, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: 40, opacity: 0 }}
+              transition={{ duration: 0.25 }}
+              onClick={(e) => e.stopPropagation()}
+              onSubmit={saveEdit}
+              className="w-full max-w-lg max-h-[92vh] overflow-y-auto border border-white/10 bg-[#121214] p-5 sm:p-7"
+            >
+              <div className="flex items-start justify-between mb-5">
+                <div>
+                  <span className="label-tag">Edit</span>
+                  <h3 className="mt-3 font-display uppercase font-extrabold text-white text-xl sm:text-2xl tracking-tight">
+                    Edit <span style={{ color: 'var(--neon)' }}>beat</span>
+                  </h3>
+                </div>
+                <button
+                  type="button"
+                  onClick={cancelEdit}
+                  disabled={editSaving}
+                  className="text-white/40 hover:text-white transition-colors disabled:opacity-40"
+                  aria-label="Close"
+                  data-testid="edit-close"
+                >
+                  <X size={18} />
+                </button>
+              </div>
+
+              <div className="space-y-5">
+                <input
+                  className="raw-input"
+                  placeholder="Title"
+                  value={editForm.title}
+                  onChange={editField('title')}
+                  data-testid="edit-title"
+                />
+                <input
+                  className="raw-input"
+                  placeholder="Genre"
+                  value={editForm.genre}
+                  onChange={editField('genre')}
+                  data-testid="edit-genre"
+                />
+                <div className="grid grid-cols-2 gap-4">
+                  <input
+                    className="raw-input"
+                    placeholder="BPM"
+                    type="number"
+                    value={editForm.bpm}
+                    onChange={editField('bpm')}
+                    data-testid="edit-bpm"
+                  />
+                  <input
+                    className="raw-input"
+                    placeholder="Price (€)"
+                    type="number"
+                    step="0.01"
+                    value={editForm.price}
+                    onChange={editField('price')}
+                    data-testid="edit-price"
+                  />
+                </div>
+
+                {/* Current + optional new cover */}
+                <div>
+                  <p className="font-mono text-[0.6rem] uppercase tracking-[0.22em] text-white/40 mb-2">
+                    Cover {editForm.cover ? '— new file selected' : '(keep current if empty)'}
+                  </p>
+                  <label className={`dropzone ${editForm.cover ? 'has-file' : ''}`}>
+                    <div className="flex items-center gap-4">
+                      <img
+                        src={editCoverPreview || editing.cover_url}
+                        alt=""
+                        className="h-16 w-16 object-cover border border-white/10 flex-shrink-0"
+                      />
+                      <div className="flex-1 min-w-0">
+                        <p className="font-mono text-xs uppercase tracking-[0.2em] text-white/80 truncate">
+                          {editForm.cover ? editForm.cover.name : 'Tap to replace'}
+                        </p>
+                        <p className="font-mono text-[0.65rem] text-white/40 mt-1">
+                          {editForm.cover ? bytesToHuman(editForm.cover.size) : 'Or drop a new file here'}
+                        </p>
+                      </div>
+                      {editForm.cover && (
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setEditForm((f) => ({ ...f, cover: null }));
+                            if (editCoverRef.current) editCoverRef.current.value = '';
+                          }}
+                          className="text-white/40 hover:text-red-400 transition-colors"
+                          aria-label="Reset cover"
+                        >
+                          <X size={16} />
+                        </button>
+                      )}
+                    </div>
+                    <input
+                      ref={editCoverRef}
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => editSetFile('cover')(e.target.files?.[0])}
+                      className="hidden"
+                      data-testid="edit-cover-input"
+                    />
+                  </label>
+                </div>
+
+                {/* Audio */}
+                <div>
+                  <p className="font-mono text-[0.6rem] uppercase tracking-[0.22em] text-white/40 mb-2">
+                    Audio {editForm.audio ? '— new file selected' : '(keep current if empty)'}
+                  </p>
+                  <label className={`dropzone ${editForm.audio ? 'has-file' : ''}`}>
+                    <div className="flex items-center gap-3">
+                      <div className="h-10 w-10 flex-shrink-0 flex items-center justify-center bg-[var(--neon)]/15 border border-[var(--neon)]/40">
+                        <Music2 size={16} className="text-[var(--neon)]" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="font-mono text-xs uppercase tracking-[0.2em] text-white/80 truncate">
+                          {editForm.audio ? editForm.audio.name : 'Tap to replace audio'}
+                        </p>
+                        <p className="font-mono text-[0.65rem] text-white/40 mt-1">
+                          {editForm.audio ? bytesToHuman(editForm.audio.size) : 'mp3, wav…'}
+                        </p>
+                      </div>
+                      {editForm.audio && (
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setEditForm((f) => ({ ...f, audio: null }));
+                            if (editAudioRef.current) editAudioRef.current.value = '';
+                          }}
+                          className="text-white/40 hover:text-red-400 transition-colors"
+                          aria-label="Reset audio"
+                        >
+                          <X size={16} />
+                        </button>
+                      )}
+                    </div>
+                    <input
+                      ref={editAudioRef}
+                      type="file"
+                      accept="audio/*"
+                      onChange={(e) => editSetFile('audio')(e.target.files?.[0])}
+                      className="hidden"
+                      data-testid="edit-audio-input"
+                    />
+                  </label>
+                </div>
+
+                {editErr && (
+                  <p className="text-red-400 font-mono text-xs uppercase tracking-[0.2em] flex items-center gap-2">
+                    <AlertTriangle size={12} /> {editErr}
+                  </p>
+                )}
+
+                <div className="flex flex-col sm:flex-row gap-3 pt-2">
+                  <button
+                    type="button"
+                    onClick={cancelEdit}
+                    disabled={editSaving}
+                    className="btn-neon flex-1 disabled:opacity-40"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={editSaving}
+                    className="btn-solid flex-1"
+                    data-testid="edit-submit"
+                  >
+                    {editSaving ? (
+                      <Loader2 size={14} className="animate-spin" />
+                    ) : (
+                      <Save size={14} />
+                    )}
+                    <span style={{ marginLeft: 8 }}>
+                      {editSaving ? (editStep || 'Saving…') : 'Save changes'}
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </motion.form>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
