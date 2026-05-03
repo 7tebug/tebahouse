@@ -1,0 +1,155 @@
+{
+  "project_name": "TebaHouse Portfolio & Beat Store",
+  "theme": "dark",
+  "archetype": "Archetype 5 (Jewel & Luxury) mixed with Archetype 7 (Electric & Neon accents)",
+  "color_palette": {
+    "background": {
+      "hex": "#0a0a0b",
+      "hsl": "240, 5%, 4%",
+      "description": "Deep void black for the main background."
+    },
+    "foreground": {
+      "hex": "#f3f3f4",
+      "hsl": "240, 5%, 95%",
+      "description": "Off-white text for high contrast without harshness."
+    },
+    "primary_neon": {
+      "hex": "#9D4CDD",
+      "hsl": "273, 67%, 58%",
+      "description": "Electric purple used strictly for highlights, CTAs, and hover states."
+    },
+    "secondary_deep": {
+      "hex": "#2a1542",
+      "hsl": "268, 51%, 17%",
+      "description": "Deep indigo/purple for subtle gradients, active states, or card backgrounds."
+    },
+    "surface": {
+      "hex": "#121214",
+      "hsl": "240, 5%, 7%",
+      "description": "Slightly elevated black for cards and inputs."
+    },
+    "border": {
+      "hex": "#27272a",
+      "hsl": "240, 5%, 16%",
+      "description": "Subtle border color to separate elements without clutter."
+    }
+  },
+  "typography": {
+    "google_fonts_import": "@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@400;600;700;800&family=Permanent+Marker&display=swap');",
+    "headings": {
+      "family": "'Syne', sans-serif",
+      "weights": ["600", "700", "800"],
+      "description": "Distinctive, geometric, wide display font for a strong 'producer' identity."
+    },
+    "body_and_ui": {
+      "family": "'JetBrains Mono', monospace",
+      "weights": ["400", "500", "700"],
+      "description": "Technical monospace font for labels, stats, BPM, and descriptions. Contrasts beautifully with Syne."
+    },
+    "logo_fallback": {
+      "family": "'Permanent Marker', cursive",
+      "description": "Fallback graffiti/grunge font for 'TH' logo if image is unavailable."
+    }
+  },
+  "global_styles": {
+    "noise_texture": "A fixed overlay with `pointer-events: none`, `mix-blend-mode: overlay`, and `opacity: 0.03` to add a subtle analog/grunge feel to the whole site.",
+    "layout": "Asymmetrical where possible, left-aligned typography, generous padding (`py-24` or `py-32` for sections).",
+    "corners": "Sharp or slightly rounded (`rounded-sm` to `rounded-md`, max 4px-8px) to maintain an edgy look.",
+    "borders": "1px solid borders (`border-white/10`) extensively used to define cards without needing heavy backgrounds."
+  },
+  "micro_animations": {
+    "hover_lift": "CSS transform: `translateY(-4px)` with a smooth `ease-out` transition (duration 300ms) and subtle box-shadow glow.",
+    "magnetic_feel": "Slight scale up `scale(1.02)` on interactive cards.",
+    "staggered_reveals": "Framer Motion `whileInView` with `opacity: 0`, `y: 20`, staggering children by 0.1s.",
+    "animated_waveform": "CSS keyframes for beat cards on hover: multiple vertical bars spanning heights from 20% to 100% using `animation: pulse 0.8s infinite alternate`.",
+    "neon_glow": "CTAs and active elements receive `box-shadow: 0 0 15px rgba(157, 76, 221, 0.4)` on hover."
+  },
+  "sections_directives": {
+    "navbar": {
+      "layout": "Fixed/Sticky top, `backdrop-blur-md` and `bg-black/70` after scroll. Generous side padding.",
+      "elements": "Logo 'TH' on the left, Links (Home, Beats, Contact me) centered or right-aligned.",
+      "behavior": "Smooth scroll to sections using standard anchor links or Framer Motion scroll.",
+      "test_ids": ["nav-logo", "nav-link-home", "nav-link-beats", "nav-link-contact"]
+    },
+    "hero": {
+      "layout": "Min-height `90vh`, asymmetrical grid or flex.",
+      "typography": "H1: 'Welcome to the TebaHouse' (uppercase, extremely tight tracking, `text-5xl` to `text-7xl`). Tagline: 'More than just sound' (Monospace, purple accent).",
+      "visuals": "Dark moody studio image taking up significant space but fading into the background using a CSS gradient mask.",
+      "effects": "Subtle radial purple gradient glow behind the text (`bg-purple-900/20 blur-[100px]`).",
+      "test_ids": ["hero-title", "hero-tagline", "hero-image"]
+    },
+    "about": {
+      "layout": "Bento-style or standard CSS Grid (2 columns on desktop).",
+      "left_column": "Vertical studio image inside a sharp container.",
+      "right_column": "Heading 'I'll turn your ideas into breathtaking tracks.', description text, and 2 animated stats counters.",
+      "stats": "9 Years of Experience, 50+ Positive Reviews (use Framer Motion for counting up).",
+      "test_ids": ["about-section", "about-image", "stat-experience", "stat-reviews"]
+    },
+    "services": {
+      "layout": "3-column grid (`grid-cols-1 md:grid-cols-3`).",
+      "cards": "Beatmaking, Mix & Mastering, Free Consultation.",
+      "styling": "Dark surface (`bg-[#121214]`), `border border-white/5`. On hover: `border-[#9D4CDD]/50` and slight lift. Include `lucide-react` icons.",
+      "test_ids": ["service-card-beatmaking", "service-card-mixing", "service-card-consultation"]
+    },
+    "brands_marquee": {
+      "layout": "Full width, zero side padding, infinite scroll using Framer Motion or `react-fast-marquee`.",
+      "content": "Text logos or simple SVGs of FabFilter, IK Multimedia, Solid State Logic, Antares, Waves, Native Instruments.",
+      "styling": "Monochrome/muted (`text-white/40`), `font-mono`, uppercase. Slow, smooth drift.",
+      "test_ids": ["brands-marquee", "marquee-item"]
+    },
+    "beats_shop": {
+      "layout": "Responsive grid for covers (`grid-cols-2 md:grid-cols-4 lg:grid-cols-5`).",
+      "cards": "1:1 square aspect ratio. Dark placeholder or abstract cover image.",
+      "hover_state": "Overlay darkens, animated CSS waveform appears in the center.",
+      "interaction": "Clicking a card opens an inline player module directly below the active row (or absolute overlay).",
+      "inline_player": "Displays: Title, custom progress bar (animated line/ring), Time, BPM, Genre, Price. CTA: 'Contattami per acquistare'.",
+      "test_ids": ["beat-card", "beat-play-button", "inline-player", "player-progress", "buy-beat-button"]
+    },
+    "contact": {
+      "layout": "Centered or split layout with contact info on the left, form on the right.",
+      "form_elements": "Name, Email, Message inputs. Raw/minimalist styling: bottom borders only (`border-b border-white/20`), no full backgrounds for inputs. Floating labels if possible, or bold mono labels.",
+      "submit_button": "Magnetic hover effect, solid neon purple background or black with glowing neon border.",
+      "test_ids": ["contact-form", "input-name", "input-email", "input-message", "submit-contact"]
+    },
+    "footer": {
+      "layout": "Massive top/bottom padding (`py-24`). Multi-column layout.",
+      "content": "Verona/Pescantina 37026, +39 375 526 4359, 7tebahouse@gmail.com. Social links (YouTube, Instagram, LinkedIn). Legal links. 'TebaHouse © 2026'.",
+      "typography": "Small, muted, monospace for most info. Large logo text 'TH' in background or one corner.",
+      "test_ids": ["footer", "footer-social-link", "footer-legal"]
+    }
+  },
+  "media_assets": {
+    "images": [
+      {
+        "category": "hero_background",
+        "url": "https://images.pexels.com/photos/9422906/pexels-photo-9422906.jpeg",
+        "description": "Horizontal recording studio with neon lights. Best for hero section."
+      },
+      {
+        "category": "about_vertical",
+        "url": "https://images.pexels.com/photos/18197126/pexels-photo-18197126.jpeg",
+        "description": "Vertical, moody studio shot. Perfect for the About section bento box."
+      },
+      {
+        "category": "beat_cover_abstract_1",
+        "url": "https://images.pexels.com/photos/17225445/pexels-photo-17225445.jpeg",
+        "description": "Abstract DJ console glowing lights. Use as a default cover for beats in the shop."
+      },
+      {
+        "category": "beat_cover_abstract_2",
+        "url": "https://images.pexels.com/photos/27141312/pexels-photo-27141312.jpeg",
+        "description": "Abstract audio interface sound waves. Alternate beat cover."
+      }
+    ],
+    "icons_library": "lucide-react"
+  },
+  "instructions_to_main_agent": [
+    "DO NOT USE INTER OR ROBOTO. Strictly use 'Syne' for headings and 'JetBrains Mono' for body/UI text.",
+    "Do not use generic flat gradients. Use pure CSS background: #0a0a0b with subtle radial glows for depth.",
+    "Ensure the beat player uses pure CSS/Framer Motion for the waveform and progress ring, avoiding heavy external 3D/audio libraries unless essential.",
+    "Form submission must be wired to use the Resend SDK or a simulated mock API if keys are missing.",
+    "Apply `data-testid` to all interactive elements as specified in the sections.",
+    "Avoid Shadcn 'Card' wrappers for the main layout to preserve the gritty, custom aesthetic. Use raw divs with Tailwind.",
+    "Keep the aesthetic heavily inspired by underground producer portfolios: sharp, dark, heavily asymmetric, and extremely intentional with the use of the purple neon accent."
+  ]
+}
