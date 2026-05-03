@@ -34,8 +34,12 @@ export default function Hero() {
           className="font-display uppercase font-extrabold text-white leading-[0.95] tracking-[-0.03em] text-center md:text-left max-w-full"
           style={{ fontSize: 'clamp(1.5rem, 7vw, 9rem)' }}
         >
-          Welcome to the<br className="hidden md:inline" />{' '}
-          Teba<span style={{ color: 'var(--neon)' }}>House</span>.
+          <span className="md:hidden">
+            Welcome<br /> to the<br /> Teba<span style={{ color: 'var(--neon)' }}>House</span>.
+          </span>
+          <span className="hidden md:inline">
+            Welcome to the<br /> Teba<span style={{ color: 'var(--neon)' }}>House</span>.
+          </span>
         </motion.h1>
 
         <motion.p

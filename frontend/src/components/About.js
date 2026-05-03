@@ -64,9 +64,12 @@ export default function About() {
             className="mt-5 font-display font-extrabold uppercase text-white leading-[1.05] tracking-[-0.02em]"
             style={{ fontSize: 'clamp(1.5rem, 3.5vw, 4rem)' }}
           >
-            I&apos;ll turn your ideas
-            <br />
-            into <span style={{ color: 'var(--neon)' }}>breathtaking</span> tracks.
+            <span className="md:hidden">
+              I&apos;ll turn<br /> your ideas<br /> into<br /> <span style={{ color: 'var(--neon)' }}>breathtaking</span><br /> tracks.
+            </span>
+            <span className="hidden md:inline">
+              I&apos;ll turn your ideas<br /> into <span style={{ color: 'var(--neon)' }}>breathtaking</span> tracks.
+            </span>
           </motion.h2>
 
           <motion.p
