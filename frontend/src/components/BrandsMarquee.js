@@ -29,8 +29,8 @@ export default function BrandsMarquee() {
       className="relative pt-20 md:pt-28 pb-28 md:pb-40 border-t border-b border-white/5 overflow-hidden marquee"
       aria-label="Tools and gear I use"
     >
-      <div className="container-x mb-14 md:mb-20">
-        <span className="label-tag">Toolbox · 04</span>
+      <div className="container-x mb-14 md:mb-20 text-center md:text-left">
+        <span className="label-tag inline-block">Toolbox · 04</span>
         <p className="mt-5 font-mono text-white/50 uppercase tracking-[0.2em] text-xs md:text-sm">
           — Plugins, monitors, mics &amp; acoustic treatment behind every track.
         </p>

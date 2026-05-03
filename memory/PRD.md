@@ -22,6 +22,8 @@
 - **Admin login polish** — purple glow background, large `ADMIN ACCESS` heading with neon accent, animated error feedback with alert icon, "Authorised personnel only" footer.
 - **Admin dashboard polish** — drag&drop dropzones for cover + audio, cover thumbnail preview before upload, file size shown, animated success/error states, sticky upload form on desktop, library row with embedded audio preview, animated row transitions, library skeleton.
 - **CSS extras** — `beat-bar-pulse` keyframe for animated waveform during playback, `dropzone` styles with drag/has-file states.
+- **Mobile responsive pass (Jan 2026)** — Hero/About/Services/BeatsShop/Contact/Footer all centered on mobile with responsive headings (clamp + smaller min sizes, no overflow at 320px). Hero `<br>` hidden below md so text wraps naturally. Buttons full-width on small screens. Footer columns center with inline-block lists.
+- **Admin upload hardening** — session validity check before upload, step-by-step status ("Uploading cover…", "Uploading audio…", "Saving…"), automatic storage rollback if any step fails, try/catch around post-upload `fetchBeats` so a refresh failure can never crash the page.
 
 ## Supabase setup (already done by user)
 - `beats` table: id, title, genre, bpm, price, cover_url, audio_url, created_at

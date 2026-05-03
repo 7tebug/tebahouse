@@ -17,15 +17,15 @@ export default function Footer() {
       </div>
 
       <div className="container-x relative">
-        <div className="grid md:grid-cols-12 gap-10 md:gap-6">
-          <div className="md:col-span-5">
+        <div className="grid md:grid-cols-12 gap-10 md:gap-6 text-center md:text-left">
+          <div className="md:col-span-5 flex flex-col items-center md:items-start">
             <img src="/brand/th-logo.png" alt="TebaHouse" className="h-10 w-auto" />
             <p className="mt-5 font-mono text-white/50 text-sm leading-relaxed max-w-sm">
               TebaHouse — independent music production, mixing and mastering.
               Crafted from Verona, Italy, with a lot of late nights.
             </p>
 
-            <div className="mt-8 flex items-center gap-3">
+            <div className="mt-8 flex items-center justify-center md:justify-start gap-3">
               <a href="https://instagram.com" target="_blank" rel="noreferrer" aria-label="Instagram"
                 className="h-10 w-10 flex items-center justify-center border border-white/10 text-white/60 hover:text-[var(--neon)] hover:border-[var(--neon)]/60 transition-all">
                 <Instagram size={16} />
@@ -53,7 +53,7 @@ export default function Footer() {
 
           <div className="md:col-span-4">
             <h4 className="font-mono text-[0.65rem] uppercase tracking-[0.25em] text-white/30 mb-5">Get in touch</h4>
-            <ul className="space-y-4 font-mono text-sm">
+            <ul className="space-y-4 font-mono text-sm inline-block text-left">
               <li className="flex items-start gap-3">
                 <MapPin size={14} className="text-[var(--neon)] mt-0.5 shrink-0" />
                 <span className="text-white/70">Verona, Veneto<br />Pescantina 37026, Italy</span>
@@ -64,17 +64,17 @@ export default function Footer() {
               </li>
               <li className="flex items-center gap-3">
                 <Mail size={14} className="text-[var(--neon)] shrink-0" />
-                <a href="mailto:7tebahouse@gmail.com" className="text-white/80 hover:text-white transition-colors">7tebahouse@gmail.com</a>
+                <a href="mailto:7tebahouse@gmail.com" className="text-white/80 hover:text-white transition-colors break-all">7tebahouse@gmail.com</a>
               </li>
             </ul>
           </div>
         </div>
 
-        <div className="mt-16 pt-8 border-t border-white/5 flex flex-col md:flex-row items-start md:items-center justify-between gap-5">
+        <div className="mt-16 pt-8 border-t border-white/5 flex flex-col md:flex-row items-center md:items-center justify-between gap-5 text-center md:text-left">
           <p className="font-mono text-[0.7rem] uppercase tracking-[0.2em] text-white/35">
             TebaHouse © 2026. All rights reserved.
           </p>
-          <div className="flex items-center gap-5 font-mono text-[0.7rem] uppercase tracking-[0.2em] text-white/35">
+          <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 md:gap-5 font-mono text-[0.7rem] uppercase tracking-[0.2em] text-white/35">
             <a href="#" className="hover:text-white transition-colors">Terms &amp; Conditions</a>
             <a href="/cookie-policy" className="hover:text-white transition-colors">Cookie Policy</a>
             <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>

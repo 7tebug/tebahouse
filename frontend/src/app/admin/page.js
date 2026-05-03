@@ -46,6 +46,7 @@ export default function AdminPage() {
   const [upload, setUpload] = useState(initialUpload);
   const [coverPreview, setCoverPreview] = useState('');
   const [uploading, setUploading] = useState(false);
+  const [uploadStep, setUploadStep] = useState('');
   const [uploadErr, setUploadErr] = useState('');
   const [uploadOk, setUploadOk] = useState('');
   const [coverDrag, setCoverDrag] = useState(false);
@@ -79,12 +80,23 @@ export default function AdminPage() {
 
   const fetchBeats = async () => {
     setLoadingList(true);
-    const { data, error } = await supabase
-      .from('beats')
-      .select('*')
-      .order('created_at', { ascending: false });
-    if (!error) setBeats(data || []);
-    setLoadingList(false);
+    try {
+      const { data, error } = await supabase
+        .from('beats')
+        .select('*')
+        .order('created_at', { ascending: false });
+      if (error) {
+        console.error('fetchBeats error', error);
+        setBeats([]);
+      } else {
+        setBeats(data || []);
+      }
+    } catch (err) {
+      console.error('fetchBeats threw', err);
+      setBeats([]);
+    } finally {
+      setLoadingList(false);
+    }
   };
 
   useEffect(() => {
@@ -154,13 +166,21 @@ export default function AdminPage() {
       return;
     }
     setUploading(true);
+    const titleSnapshot = upload.title;
     try {
+      // Verify session is still valid (could've expired during long uploads)
+      const { data: sessData } = await supabase.auth.getSession();
+      if (!sessData?.session) {
+        throw new Error('Session expired — please sign in again');
+      }
+
       const beatId = crypto.randomUUID();
-      const coverExt = upload.cover.name.split('.').pop() || 'jpg';
-      const audioExt = upload.audio.name.split('.').pop() || 'mp3';
+      const coverExt = (upload.cover.name.split('.').pop() || 'jpg').toLowerCase();
+      const audioExt = (upload.audio.name.split('.').pop() || 'mp3').toLowerCase();
       const coverPath = `covers/${beatId}.${coverExt}`;
       const audioPath = `audio/${beatId}.${audioExt}`;
 
+      setUploadStep('Uploading cover…');
       const { error: coverErr } = await supabase.storage
         .from(BEATS_BUCKET)
         .upload(coverPath, upload.cover, {
@@ -169,14 +189,20 @@ export default function AdminPage() {
         });
       if (coverErr) throw coverErr;
 
+      setUploadStep('Uploading audio…');
       const { error: audioErr } = await supabase.storage
         .from(BEATS_BUCKET)
         .upload(audioPath, upload.audio, {
           contentType: upload.audio.type,
           upsert: false,
         });
-      if (audioErr) throw audioErr;
+      if (audioErr) {
+        // rollback cover
+        await supabase.storage.from(BEATS_BUCKET).remove([coverPath]).catch(() => {});
+        throw audioErr;
+      }
 
+      setUploadStep('Saving…');
       const coverUrl = supabase.storage
         .from(BEATS_BUCKET)
         .getPublicUrl(coverPath).data.publicUrl;
@@ -193,15 +219,24 @@ export default function AdminPage() {
         cover_url: coverUrl,
         audio_url: audioUrl,
       });
-      if (insertErr) throw insertErr;
+      if (insertErr) {
+        // rollback storage
+        await supabase.storage
+          .from(BEATS_BUCKET)
+          .remove([coverPath, audioPath])
+          .catch(() => {});
+        throw insertErr;
+      }
 
       resetForm();
-      setUploadOk(`"${upload.title}" uploaded`);
-      fetchBeats();
+      setUploadOk(`"${titleSnapshot}" uploaded`);
+      try { await fetchBeats(); } catch (err) { console.error('post-upload refresh failed', err); }
       setTimeout(() => setUploadOk(''), 4000);
     } catch (err) {
+      console.error('Upload failed', err);
       setUploadErr(err?.message || 'Upload failed');
     } finally {
+      setUploadStep('');
       setUploading(false);
     }
   };
@@ -377,10 +412,10 @@ export default function AdminPage() {
         </div>
       </header>
 
-      <div className="container-x py-12 md:py-16 grid lg:grid-cols-12 gap-10">
+      <div className="container-x py-10 md:py-16 grid lg:grid-cols-12 gap-8 md:gap-10">
         <form
           onSubmit={submitUpload}
-          className="lg:col-span-5 space-y-5 border border-white/10 bg-[#121214] p-6 md:p-8 h-fit lg:sticky lg:top-[88px]"
+          className="lg:col-span-5 space-y-5 border border-white/10 bg-[#121214] p-5 sm:p-6 md:p-8 h-fit lg:sticky lg:top-[88px]"
           data-testid="upload-form"
         >
           <div>
@@ -579,7 +614,7 @@ export default function AdminPage() {
               <Upload size={14} />
             )}
             <span style={{ marginLeft: 8 }}>
-              {uploading ? 'Uploading…' : 'Upload beat'}
+              {uploading ? (uploadStep || 'Uploading…') : 'Upload beat'}
             </span>
           </button>
         </form>
@@ -629,13 +664,13 @@ export default function AdminPage() {
                     <img
                       src={b.cover_url}
                       alt={b.title}
-                      className="w-16 h-16 object-cover border border-white/5"
+                      className="w-14 h-14 sm:w-16 sm:h-16 object-cover border border-white/5 flex-shrink-0"
                     />
                     <div className="flex-1 min-w-0">
-                      <h4 className="font-display font-bold text-white truncate">
+                      <h4 className="font-display font-bold text-white truncate text-sm sm:text-base">
                         {b.title}
                       </h4>
-                      <p className="font-mono text-[0.65rem] uppercase tracking-[0.2em] text-white/40 mt-1">
+                      <p className="font-mono text-[0.6rem] sm:text-[0.65rem] uppercase tracking-[0.18em] sm:tracking-[0.2em] text-white/40 mt-1 truncate">
                         {b.genre} · {b.bpm} BPM ·{' '}
                         <span className="text-[var(--neon)]">
                           €{Number(b.price).toFixed(0)}
@@ -646,12 +681,13 @@ export default function AdminPage() {
                       src={b.audio_url}
                       controls
                       preload="none"
-                      className="hidden md:block h-9 max-w-[240px]"
+                      onError={() => {}}
+                      className="hidden lg:block h-9 max-w-[220px]"
                       style={{ filter: 'invert(1) hue-rotate(180deg) saturate(0.6)' }}
                     />
                     <button
                       onClick={() => deleteBeat(b)}
-                      className="h-10 w-10 flex items-center justify-center border border-white/10 text-white/50 hover:text-red-400 hover:border-red-400/50 transition-colors"
+                      className="h-10 w-10 flex-shrink-0 flex items-center justify-center border border-white/10 text-white/50 hover:text-red-400 hover:border-red-400/50 transition-colors"
                       aria-label="Delete beat"
                       data-testid={`delete-beat-${b.id}`}
                     >

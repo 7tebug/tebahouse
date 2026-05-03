@@ -69,12 +69,12 @@ export default function BeatsShop() {
       <div className="purple-glow absolute top-1/3 right-0 w-[500px] h-[500px] pointer-events-none opacity-50" />
 
       <div className="container-x relative">
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10 md:mb-14">
-          <div>
+        <div className="flex flex-col items-center text-center md:items-end md:text-left md:flex-row md:justify-between gap-6 mb-10 md:mb-14">
+          <div className="w-full md:w-auto">
             <span className="label-tag">Shop · 05</span>
             <h2
               className="mt-5 font-display uppercase font-extrabold text-white leading-[1] tracking-[-0.02em]"
-              style={{ fontSize: 'clamp(2.5rem, 5vw, 5rem)' }}
+              style={{ fontSize: 'clamp(2.25rem, 5vw, 5rem)' }}
               data-testid="beats-heading"
             >
               Listen to my
@@ -91,14 +91,14 @@ export default function BeatsShop() {
               </div>
             )}
           </div>
-          <p className="font-mono text-white/50 text-sm max-w-sm uppercase tracking-wider leading-relaxed">
+          <p className="font-mono text-white/50 text-xs sm:text-sm max-w-xs sm:max-w-sm uppercase tracking-wider leading-relaxed">
             — hover to feel, click to play. Then hit me up to make it yours.
           </p>
         </div>
 
         {/* Genre filters */}
         {!loading && genres.length > 2 && (
-          <div className="flex flex-wrap gap-2 mb-8" data-testid="genre-filters">
+          <div className="flex flex-wrap justify-center md:justify-start gap-2 mb-8" data-testid="genre-filters">
             {genres.map((g) => {
               const active = g === activeGenre;
               return (
