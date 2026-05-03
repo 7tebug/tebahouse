@@ -22,7 +22,7 @@ export default function Hero() {
       </div>
 
       <div className="container-x relative z-10 w-full">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }} className="mb-8">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }} className="mb-6 md:mb-8 flex md:block justify-center">
           <span className="label-tag">Music Producer · Verona, IT</span>
         </motion.div>
 
@@ -31,21 +31,18 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.15 }}
           data-testid="hero-title"
-          className="font-display uppercase font-extrabold text-white leading-[0.95] tracking-[-0.03em]"
-          style={{ fontSize: 'clamp(3rem, 7vw, 9rem)' }}
+          className="font-display uppercase font-extrabold text-white leading-[0.95] tracking-[-0.03em] text-center md:text-left max-w-full"
+          style={{ fontSize: 'clamp(1.5rem, 7vw, 9rem)' }}
         >
-          Welcome to the
-          <br />
-          <span className="inline-block">
-            Teba<span style={{ color: 'var(--neon)' }}>House</span>.
-          </span>
+          Welcome to the<br className="hidden md:inline" />{' '}
+          Teba<span style={{ color: 'var(--neon)' }}>House</span>.
         </motion.h1>
 
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
-          className="mt-8 font-mono text-white/60 uppercase tracking-[0.25em] text-xs md:text-sm"
+          className="mt-6 md:mt-8 font-mono text-white/60 uppercase tracking-[0.25em] text-[0.7rem] md:text-sm text-center md:text-left"
         >
           — more than just sound.
         </motion.p>
@@ -54,12 +51,12 @@ export default function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6 }}
-          className="mt-14 flex flex-wrap gap-4"
+          className="mt-10 md:mt-14 flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4 items-stretch sm:items-center justify-center md:justify-start"
         >
-          <button onClick={scrollToBeats} className="btn-neon">Listen to beats</button>
+          <button onClick={scrollToBeats} className="btn-neon w-full sm:w-auto">Listen to beats</button>
           <button
             onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
-            className="btn-neon"
+            className="btn-neon w-full sm:w-auto"
             style={{ borderColor: 'rgba(255,255,255,0.2)' }}
           >
             Get in touch →

@@ -43,18 +43,18 @@ export default function Contact() {
       <div className="purple-glow absolute top-0 right-0 w-[500px] h-[500px] pointer-events-none" />
 
       <div className="container-x grid md:grid-cols-12 gap-10 md:gap-16 relative">
-        <div className="md:col-span-5">
-          <span className="label-tag">Contact · 06</span>
+        <div className="md:col-span-5 text-center md:text-left">
+          <span className="label-tag inline-block">Contact · 06</span>
           <h2
             className="mt-5 font-display uppercase font-extrabold text-white leading-[1] tracking-[-0.02em]"
-            style={{ fontSize: 'clamp(2.25rem, 5vw, 4.5rem)' }}
+            style={{ fontSize: 'clamp(2.1rem, 5vw, 4.5rem)' }}
           >
             Let&apos;s make
             <br />
             <span style={{ color: 'var(--neon)' }}>noise</span>.
           </h2>
 
-          <p className="mt-8 font-mono text-white/55 text-sm leading-relaxed max-w-md">
+          <p className="mt-6 md:mt-8 font-mono text-white/55 text-sm leading-relaxed max-w-md mx-auto md:mx-0">
             Got a track in mind, a rough idea, or just want to chat about sound?
             Drop a line — I reply fast.
           </p>
@@ -62,7 +62,7 @@ export default function Contact() {
           <div className="mt-10 space-y-4 font-mono text-sm">
             <div>
               <div className="text-white/30 text-[0.65rem] uppercase tracking-[0.25em]">Email</div>
-              <a href="mailto:7tebahouse@gmail.com" className="text-white hover:text-[var(--neon)] transition-colors">
+              <a href="mailto:7tebahouse@gmail.com" className="text-white hover:text-[var(--neon)] transition-colors break-all">
                 7tebahouse@gmail.com
               </a>
             </div>
@@ -97,9 +97,9 @@ export default function Contact() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.24 }}
-            className="pt-4 flex flex-wrap items-center gap-5"
+            className="pt-4 flex flex-col sm:flex-row sm:flex-wrap items-stretch sm:items-center gap-4 sm:gap-5"
           >
-            <button type="submit" disabled={status === 'sending'} className="btn-solid">
+            <button type="submit" disabled={status === 'sending'} className="btn-solid w-full sm:w-auto">
               {status === 'sending' ? 'Sending…' : 'Send message'}
               <Send size={14} style={{ marginLeft: 8 }} />
             </button>

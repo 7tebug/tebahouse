@@ -45,13 +45,13 @@ export default function About() {
           <div className="purple-glow absolute -bottom-20 -left-10 w-[400px] h-[400px] pointer-events-none" />
         </motion.div>
 
-        <div className="md:col-span-7 md:pt-6">
+        <div className="md:col-span-7 md:pt-6 text-center md:text-left">
           <motion.span
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="label-tag"
+            className="label-tag inline-block"
           >
             About · 01
           </motion.span>
@@ -61,8 +61,8 @@ export default function About() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-80px' }}
             transition={{ duration: 0.7, delay: 0.1 }}
-            className="mt-5 font-display font-extrabold uppercase text-white leading-[1.02] tracking-[-0.02em]"
-            style={{ fontSize: 'clamp(2rem, 3.5vw, 4rem)' }}
+            className="mt-5 font-display font-extrabold uppercase text-white leading-[1.05] tracking-[-0.02em]"
+            style={{ fontSize: 'clamp(1.5rem, 3.5vw, 4rem)' }}
           >
             I&apos;ll turn your ideas
             <br />
@@ -74,14 +74,14 @@ export default function About() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-80px' }}
             transition={{ duration: 0.7, delay: 0.25 }}
-            className="mt-8 text-white/60 font-mono text-sm md:text-base leading-relaxed max-w-2xl"
+            className="mt-6 md:mt-8 text-white/60 font-mono text-sm md:text-base leading-relaxed max-w-2xl mx-auto md:mx-0"
           >
             Hey, I&apos;m Teba — a 360° music producer. I work on beat production, songwriting,
             and mix &amp; mastering. I discovered music at the age of 12, and it&apos;s been 9 years
             now that I&apos;ve been pouring my time and energy into it.
           </motion.p>
 
-          <div className="mt-14 grid grid-cols-2 gap-8 max-w-xl">
+          <div className="mt-10 md:mt-14 grid grid-cols-2 gap-6 md:gap-8 max-w-xl mx-auto md:mx-0">
             <div>
               <Counter to={9} />
               <p className="mt-3 font-mono uppercase tracking-[0.2em] text-xs text-white/50">

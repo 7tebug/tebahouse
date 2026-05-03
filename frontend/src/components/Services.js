@@ -28,19 +28,19 @@ export default function Services() {
   return (
     <section id="services" className="relative section-pad border-t border-white/5">
       <div className="container-x">
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-16">
-          <div>
+        <div className="flex flex-col items-center text-center md:items-end md:text-left md:flex-row md:justify-between gap-6 mb-12 md:mb-16">
+          <div className="w-full md:w-auto">
             <span className="label-tag">Services · 02</span>
             <h2
               className="mt-5 font-display uppercase font-extrabold text-white leading-[1] tracking-[-0.02em]"
-              style={{ fontSize: 'clamp(2.5rem, 5vw, 5rem)' }}
+              style={{ fontSize: 'clamp(2.25rem, 5vw, 5rem)' }}
             >
               Trust a pro
               <br />
               to <span style={{ color: 'var(--neon)' }}>guide</span> you.
             </h2>
           </div>
-          <p className="font-mono text-white/50 text-sm max-w-sm uppercase tracking-wider leading-relaxed">
+          <p className="font-mono text-white/50 text-xs sm:text-sm max-w-xs sm:max-w-sm uppercase tracking-wider leading-relaxed">
             — three ways to work together. Pick yours, contact me, and let&apos;s start building.
           </p>
         </div>
