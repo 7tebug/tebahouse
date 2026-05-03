@@ -200,6 +200,28 @@ html, body {
   transition: width 120ms linear;
 }
 
+@keyframes beatBarPulse {
+  0%, 100% { transform: scaleY(0.85); }
+  50% { transform: scaleY(1.15); }
+}
+.beat-bar-pulse {
+  transform-origin: bottom center;
+  animation: beatBarPulse 0.9s ease-in-out infinite;
+}
+
+.dropzone {
+  display: block;
+  position: relative;
+  padding: 1.25rem;
+  border: 1px dashed rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.015);
+  cursor: pointer;
+  transition: border-color 200ms ease, background 200ms ease;
+}
+.dropzone:hover { border-color: rgba(157,76,221,0.6); background: rgba(157,76,221,0.04); }
+.dropzone.is-dragging { border-color: var(--neon); background: rgba(157,76,221,0.08); }
+.dropzone.has-file { border-color: rgba(157,76,221,0.5); }
+
 .section-pad { padding: 7rem 0; }
 @media (max-width: 768px) { .section-pad { padding: 4.5rem 0; } }
 
