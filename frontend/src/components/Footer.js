@@ -30,7 +30,7 @@ export default function Footer() {
                 className="h-10 w-10 flex items-center justify-center border border-white/10 text-white/60 hover:text-[var(--neon)] hover:border-[var(--neon)]/60 transition-all">
                 <Instagram size={16} />
               </a>
-              <a href="https://www.youtube.com/@7Tebahouse" target="_blank" rel="noreferrer" aria-label="YouTube"
+              <a href="https://www.youtube.com/@Tebahouse" target="_blank" rel="noreferrer" aria-label="YouTube"
                 className="h-10 w-10 flex items-center justify-center border border-white/10 text-white/60 hover:text-[var(--neon)] hover:border-[var(--neon)]/60 transition-all">
                 <Youtube size={16} />
               </a>
