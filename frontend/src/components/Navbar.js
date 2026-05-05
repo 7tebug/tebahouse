@@ -85,7 +85,7 @@ export default function Navbar() {
             transition={{ duration: 0.25 }}
             className="md:hidden overflow-hidden"
           >
-            <div className="container-x py-6 flex flex-col gap-5">
+            <div className="container-x py-8 pb-12 flex flex-col gap-6">
               {links.map((l) => (
                 <button
                   key={l.target}
