@@ -22,7 +22,7 @@ export default function Hero() {
       </div>
 
       <div className="container-x relative z-10 w-full">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }} className="mb-6 md:mb-8 flex md:block justify-center">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }} className="mb-6 md:mb-8 flex justify-center">
           <span className="label-tag">Music Producer · Verona, IT</span>
         </motion.div>
 
@@ -31,7 +31,7 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.15 }}
           data-testid="hero-title"
-          className="font-display uppercase font-extrabold text-white leading-[0.95] tracking-[-0.03em] text-center md:text-left max-w-full"
+          className="font-display uppercase font-extrabold text-white leading-[0.95] tracking-[-0.03em] text-center max-w-full"
           style={{ fontSize: 'clamp(1.5rem, 7vw, 9rem)' }}
         >
           <span className="md:hidden">
@@ -46,7 +46,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
-          className="mt-6 md:mt-8 font-mono text-white/60 uppercase tracking-[0.25em] text-[0.7rem] md:text-sm text-center md:text-left"
+          className="mt-6 md:mt-8 font-mono text-white/60 uppercase tracking-[0.25em] text-[0.7rem] md:text-sm text-center"
         >
           — more than just sound.
         </motion.p>
@@ -55,7 +55,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6 }}
-          className="mt-10 md:mt-14 flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4 items-stretch sm:items-center justify-center md:justify-start"
+          className="mt-10 md:mt-14 flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4 items-stretch sm:items-center justify-center"
         >
           <button onClick={scrollToBeats} className="btn-neon w-full sm:w-auto">Listen to beats</button>
           <button
