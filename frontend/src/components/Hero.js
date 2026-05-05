@@ -32,14 +32,9 @@ export default function Hero() {
           transition={{ duration: 0.8, delay: 0.15 }}
           data-testid="hero-title"
           className="font-display uppercase font-extrabold text-white leading-[0.95] tracking-[-0.03em] text-center max-w-full"
-          style={{ fontSize: 'clamp(1.5rem, 7vw, 9rem)' }}
+          style={{ fontSize: 'clamp(1.5rem, 7vw, 6rem)' }}
         >
-          <span className="md:hidden">
-            Welcome<br /> to the<br /> Teba<span style={{ color: 'var(--neon)' }}>House</span>.
-          </span>
-          <span className="hidden md:inline">
-            Welcome to the<br /> Teba<span style={{ color: 'var(--neon)' }}>House</span>.
-          </span>
+          Welcome<br /> to the<br /> Teba<span style={{ color: 'var(--neon)' }}>House</span>.
         </motion.h1>
 
         <motion.p
