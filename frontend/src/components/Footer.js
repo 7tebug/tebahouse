@@ -26,15 +26,15 @@ export default function Footer() {
             </p>
 
             <div className="mt-8 flex items-center justify-center md:justify-start gap-3">
-              <a href="https://instagram.com" target="_blank" rel="noreferrer" aria-label="Instagram"
+              <a href="https://www.instagram.com/7_teba/" target="_blank" rel="noreferrer" aria-label="Instagram"
                 className="h-10 w-10 flex items-center justify-center border border-white/10 text-white/60 hover:text-[var(--neon)] hover:border-[var(--neon)]/60 transition-all">
                 <Instagram size={16} />
               </a>
-              <a href="https://youtube.com" target="_blank" rel="noreferrer" aria-label="YouTube"
+              <a href="https://www.youtube.com/@7Tebahouse" target="_blank" rel="noreferrer" aria-label="YouTube"
                 className="h-10 w-10 flex items-center justify-center border border-white/10 text-white/60 hover:text-[var(--neon)] hover:border-[var(--neon)]/60 transition-all">
                 <Youtube size={16} />
               </a>
-              <a href="https://linkedin.com" target="_blank" rel="noreferrer" aria-label="LinkedIn"
+              <a href="https://www.linkedin.com/in/albert-grecu-7389b02b0/" target="_blank" rel="noreferrer" aria-label="LinkedIn"
                 className="h-10 w-10 flex items-center justify-center border border-white/10 text-white/60 hover:text-[var(--neon)] hover:border-[var(--neon)]/60 transition-all">
                 <Linkedin size={16} />
               </a>

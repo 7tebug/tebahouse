@@ -363,8 +363,17 @@ export default function AdminPage() {
       }
 
       setEditStep('Saving…');
-      const { error: updErr } = await supabase.from('beats').update(updates).eq('id', editing.id);
+      const { data: updRows, error: updErr } = await supabase
+        .from('beats')
+        .update(updates)
+        .eq('id', editing.id)
+        .select();
       if (updErr) throw updErr;
+      if (!updRows || updRows.length === 0) {
+        throw new Error(
+          'Update blocked by Supabase RLS. Add an UPDATE policy for the admin user on the `beats` table (see README/PRD).'
+        );
+      }
 
       // Remove old files (best-effort, don't fail if this errors)
       if (oldPathsToRemove.length) {
