@@ -3,7 +3,7 @@
 import { motion, useInView, useMotionValue, useTransform, animate } from 'framer-motion';
 import { useEffect, useRef } from 'react';
 
-const ABOUT_IMG = '/brand/photos/studio-about.webp';
+const ABOUT_IMG = '/brand/photos/studio-about.jpg';
 
 function Counter({ to, suffix = '' }) {
   const ref = useRef(null);
