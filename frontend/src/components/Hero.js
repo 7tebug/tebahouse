@@ -3,7 +3,7 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { ArrowDown } from 'lucide-react';
 
-const HERO_IMG = '/brand/photos/teba-hero.png';
+const HERO_IMG = '/brand/photos/teba-hero.webp';
 
 export default function Hero() {
   const scrollToBeats = () => document.getElementById('beats')?.scrollIntoView({ behavior: 'smooth' });
