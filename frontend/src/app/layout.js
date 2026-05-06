@@ -4,7 +4,7 @@ import CookieBanner from '@/components/CookieBanner';
 export const metadata = {
   title: 'TebaHouse · Music Producer',
   description: 'TebaHouse — Music producer, beatmaker, mix & mastering. Verona, IT.',
-  icons: { icon: '/brand/th-logo.png', apple: '/brand/th-logo.png' },
+  icons: { icon: '/favicon.ico' },
 };
 
 export default function RootLayout({ children }) {

@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Headphones, Sliders, MessageCircle, ArrowUpRight } from 'lucide-react';
+import { Headphones, Sliders, MessageCircle } from 'lucide-react';
 
 const services = [
   {
@@ -55,31 +55,23 @@ export default function Services() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: '-60px' }}
                 transition={{ duration: 0.6, delay: i * 0.1 }}
-                whileHover={{ y: -6 }}
-                className="group relative p-8 md:p-10 bg-[#121214] border border-white/5 hover:border-[var(--neon)]/60 transition-all duration-300 overflow-hidden"
+                className="group relative p-8 md:p-10 bg-[#121214] border border-white/5 hover:border-[var(--neon)]/60 hover:shadow-[0_0_30px_-10px_rgba(157,76,221,0.45)] transition-[border-color,box-shadow] duration-300"
                 style={{ borderRadius: 2 }}
               >
                 <div className="flex items-start justify-between">
-                  <div className="h-14 w-14 flex items-center justify-center border border-white/10 group-hover:border-[var(--neon)]/70 group-hover:bg-[var(--neon)]/10 transition-all duration-300">
+                  <div className="h-14 w-14 flex items-center justify-center border border-white/10 group-hover:border-[var(--neon)]/70 group-hover:bg-[var(--neon)]/10 transition-[border-color,background-color] duration-300">
                     <Icon size={22} className="text-white group-hover:text-[var(--neon)] transition-colors" />
                   </div>
                   <span className="font-mono text-xs text-white/30 tracking-[0.2em]">{s.number}</span>
                 </div>
 
-                <h3 className="mt-10 font-display font-bold text-2xl md:text-3xl text-white uppercase tracking-tight">
+                <h3 className="mt-10 font-display font-bold text-2xl md:text-3xl text-white group-hover:text-[var(--neon)] uppercase tracking-tight transition-colors duration-300">
                   {s.title}
                 </h3>
 
-                <p className="mt-4 font-mono text-sm text-white/55 leading-relaxed min-h-[120px]">
+                <p className="mt-4 font-mono text-sm text-white/55 leading-relaxed">
                   {s.description}
                 </p>
-
-                <div className="mt-6 flex items-center gap-2 text-[0.7rem] font-mono uppercase tracking-[0.2em] text-white/40 group-hover:text-[var(--neon)] transition-colors">
-                  <span>Get started</span>
-                  <ArrowUpRight size={14} className="transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                </div>
-
-                <div className="absolute -right-10 -bottom-10 w-40 h-40 purple-glow opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
               </motion.div>
             );
           })}

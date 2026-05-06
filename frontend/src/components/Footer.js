@@ -7,15 +7,6 @@ export default function Footer() {
 
   return (
     <footer id="footer" className="relative pt-24 pb-10 border-t border-white/5 overflow-hidden">
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.06] select-none">
-        <img
-          src="/brand/tebahouse-wordmark.png"
-          alt=""
-          aria-hidden="true"
-          className="w-[90%] max-w-[1400px] object-contain"
-        />
-      </div>
-
       <div className="container-x relative">
         <div className="grid md:grid-cols-12 gap-10 md:gap-6 text-center md:text-left">
           <div className="md:col-span-5 flex flex-col items-center md:items-start">
